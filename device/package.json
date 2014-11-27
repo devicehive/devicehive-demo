@@ -1,0 +1,13 @@
+{
+  "name": "device",
+  "version": "0.0.0",
+  "description": "device",
+  "author": {
+    "name": "pnetesa",
+    "email": ""
+  },
+  "dependencies": {
+    "nconf": "^0.6.9",
+    "xhr2": "^0.1.0"
+  }
+}
