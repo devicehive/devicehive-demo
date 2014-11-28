@@ -1,4 +1,6 @@
-﻿var DHClient = require('./devicehive/devicehive.client.js');
+﻿global.XMLHttpRequest = require('xhr2');
+global.WebSocket = require('ws');
+var DHClient = require('./devicehive/devicehive.client.js');
 var config = require('nconf').argv().env().file({ file: './config.json' });
 
 var app = (  {
@@ -36,7 +38,7 @@ var app = (  {
             subscription.message(function () {
                 self.handleNotification.apply(self, arguments);
             });
-        });
+        }, 'websocket');
     },
     
     handleNotification: function (deviceId, notification) {

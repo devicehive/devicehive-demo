@@ -1,4 +1,6 @@
-﻿var DeviceHive = require('./devicehive/devicehive.device.js');
+﻿global.XMLHttpRequest = require('xhr2');
+global.WebSocket = require('ws');
+var DeviceHive = require('./devicehive/devicehive.device.js');
 var config = require('nconf').argv().env().file({ file: './config.json' });
 
 module.exports = {
@@ -18,7 +20,7 @@ module.exports = {
             }
             
             callback(this.device);
-        });
+        }, 'websocket');
     },
     
     send: function (notification, params) {

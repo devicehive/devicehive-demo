@@ -380,8 +380,7 @@ var http = (function () {
             try {
                 return new ActiveXObject('Microsoft.XMLHTTP');
             } catch (e) {
-                var XMLHttpRequest = require('xhr2');
-                return new XMLHttpRequest;
+                return null;
             }
         };
     }
