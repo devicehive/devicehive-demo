@@ -1,10 +1,10 @@
 /devicehive-demo.sln
 /devicehive-demo.v12.suo
-/client/client.njsproj
 /device/device.njsproj
 /device/*.dat
-/client/*.dat
-/client/node_modules
-/client/obj
 /device/node_modules
 /device/obj
+/bridge/.ntvs_analysis.dat
+/bridge/node_modules
+/bridge/obj
+/bridge/bridge.njsproj
