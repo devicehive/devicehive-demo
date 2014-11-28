@@ -2,8 +2,10 @@
 global.WebSocket = require('ws');
 var DHClient = require('./devicehive/devicehive.client.js');
 var config = require('nconf').argv().env().file({ file: './config.json' });
+var ElasticSearchClient = require('elasticsearchclient');
+var elasticSearchClient = new ElasticSearchClient(config.get('elasticsearch'));
 
-var app = (  {
+var app = ({
     
     dhClient: new DHClient(config.get('serviceUrl'), config.get('accessKey')),
 
@@ -42,7 +44,19 @@ var app = (  {
     },
     
     handleNotification: function (deviceId, notification) {
+        var self = this;
+        notification.deviceId = deviceId;
         console.log(JSON.stringify(notification));
+        elasticSearchClient.index('notifications', 'devicehive', 
+            notification, notification.id, 
+            function (err, res) {
+                if (err) {
+                    return self.logError(err);
+                }
+
+                console.log('-- Indexed: ' + res + '\n');
+            }
+        );
     },
     
     logChannelState: function (state) {
