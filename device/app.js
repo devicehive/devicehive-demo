@@ -1,17 +1,10 @@
 ﻿var DevicehiveConnector = require('./devicehive-connector.js');
-//var DeviceHive = require('./devicehive/devicehive.device.js');
 
 var app = ({
     
     start: function () {
-        //DevicehiveConnector.init(
-        //    new DeviceHive('http://nnXXXX.pg.devicehive.com/api', 
-        //        'someDeviceId_123-456', 
-        //        'AccessKeyExampleAccessKeyExampleAccessKeyEx='),
-        //    this.notify);
-        
-        // Use default DeviceHive
-        DevicehiveConnector.init(this.notify);
+        var deviceId = '{00000000-0000-0000-0000-000000000000}';
+        DevicehiveConnector.init(deviceId, this.notify);
         console.log('app started...');
     },
     
