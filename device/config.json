@@ -1,5 +1,5 @@
 {
-  "serviceUrl": "http://ecloud.dataart.com/ecapi9",
-  "deviceId": "98fc96fb-f8a2-4c66-af11-1a5efde41fb6",
-  "accessKey": "7uwateyMWi3lljR93nCMumlgEGFCIglsw7tMv2egmJ0="
+  "serviceUrl": "http://23.253.35.56:8081/DeviceHive/rest",
+  "deviceId": "e50d6085-2aba-48e9-b1c3-73c673e414be",
+  "accessKey": "sStsRCchw3pCUeLwyVvhX/Q27CKeJgVFcNcDBvJiB6g="
 }

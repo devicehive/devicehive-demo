@@ -8,3 +8,5 @@
 /bridge/node_modules
 /bridge/obj
 /bridge/bridge.njsproj
+/bridge/bin
+/device/bin
