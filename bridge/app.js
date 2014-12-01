@@ -47,7 +47,7 @@ var app = ({
         var self = this;
         notification.deviceId = deviceId;
         console.log(JSON.stringify(notification));
-        elasticSearchClient.index('notifications', 'devicehive', 
+        elasticSearchClient.index('notifications', 'SensorReading', 
             notification, notification.id, 
             function (err, res) {
                 if (err) {
