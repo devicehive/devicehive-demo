@@ -23,7 +23,7 @@ module.exports = {
                     }
                     
                     callback(this.device);
-                }, 'websocket' /*'longpolling'*/);
+                }, 'websocket');
             });
     },
     
@@ -32,15 +32,16 @@ module.exports = {
         this.device.sendNotification(
             notification, params, 
             function (err, res) {
-                self.notifCallback(err, res, params);
+                self.notifCallback(err, res.notification, params);
             });
     },
     
-    notifCallback: function (err, res, params) {
+    notifCallback: function (err, res, params) {        
         if (err) {
             return this.showError(err);
         }
-        
+
+        console.log(JSON.stringify(res));  
         console.log('\nNotif sent OK id=' + res.id + ', ' + res.timestamp);
         console.log('\t' + JSON.stringify(params));
     },

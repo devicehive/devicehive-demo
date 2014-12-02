@@ -13,24 +13,26 @@ var app = ({
     
     subscribeNoble: function () {
         var self = this;
-        noble.on('stateChange', function () {
-            self.onStateChange.apply(self);
+        noble.on('stateChange', function (state) {
+            self.onStateChange.apply(self, [state]);
         });
         noble.on('scanStart', this.onScanStart);
         noble.on('scanStop', this.onScanStop);
         noble.on('discover', function (peripheral) {
+            console.log("discover()");            
             self.onDiscover.apply(self, [peripheral]);
         });
     },
     
     onStateChange: function (state) {
-        if (state === 'poweredOn') {
+        console.log("stateChange(): " + state);
+        if (state === "poweredOn") {
             noble.startScanning(this.serviceUUIDs, true);
         }
     },
     
     onScanStart: function () {
-        console.log('Starting to scanning peripheral');
+        console.log('Starting scanning for peripheral');
     },
     
     onScanStop: function () {
@@ -38,6 +40,7 @@ var app = ({
     },
     
     onDiscover: function (peripheral) {
+        console.log("onDiscover()");
         
         if (peripheral.advertisement.localName !== 'SensorTag') {
             return;
@@ -46,14 +49,15 @@ var app = ({
         if (peripheral.state !== 'disconnected') {
             return;
         }
+
         
         this.subscribePeripheral(peripheral);
         peripheral.connect();
         console.log(peripheral);
-		// console.log([peripheral.uuid, peripheral.advertisement.localName]);
     },
     
     subscribePeripheral: function (peripheral) {
+        console.log("subscribePeripheral()");
         var self = this;
         peripheral.on('connect', function () {
             self.onConnect.apply(self, [peripheral]);
@@ -86,7 +90,7 @@ var app = ({
         });
     },
     
-    subscribeService: function (peripheral, services) {
+    subscribeService: function (peripheral, service) {
         var self = this;
         service.on('characteristicsDiscover', function (characteristics) {
             self.onCharacteristicsDiscover.apply(self, [peripheral, characteristics]);
@@ -98,7 +102,9 @@ var app = ({
         characteristics.forEach(function (c) {
             var id = c.uuid.slice(4, 8);
             console.log('Characteristic: ' + id + ' ' + c.properties);
-            self.characteristicHandlers[id].apply(self, [c, id, peripheral.uuid]);
+            if (self.characteristicHandlers[id]) {
+                self.characteristicHandlers[id].apply(self, [c, id, peripheral.uuid]);
+            }
         })
     },
     
@@ -123,7 +129,7 @@ var app = ({
     },
     
     onAa01Read: function (data, isNotification, uuid) {
-        console.log('Received notification from ' + id + ': ' + data.toString('hex'));
+        console.log('Received notification from ' + uuid + ': ' + data.toString('hex'));
         var temp = this.extractTargetTemperature(data);
         console.log('Temperature = ' + temp);
         DevicehiveConnector.send('temperature', {
@@ -142,7 +148,7 @@ var app = ({
         
         var Vobj2 = t.readInt16LE(0);
         Vobj2 *= 0.00000015625;
-        var Tdie = extractAmbientTemperature(t) + 273.15;
+        var Tdie = this.extractAmbientTemperature(t) + 273.15;
         
         var S0 = 5.593E-14;	// Calibration factor
         var a1 = 1.75E-3;
