@@ -23,7 +23,7 @@ module.exports = {
                     }
                     
                     callback(this.device);
-                }, /*'websocket'*/ 'longpolling');
+                }, 'websocket' /*'longpolling'*/);
             });
     },
     

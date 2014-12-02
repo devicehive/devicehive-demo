@@ -40,7 +40,7 @@ var app = ({
             subscription.message(function () {
                 self.handleNotification.apply(self, arguments);
             });
-        }, /*'websocket'*/ 'longpolling');
+        }, 'websocket' /*'longpolling'*/);
     },
     
     handleNotification: function (deviceId, notification) {
