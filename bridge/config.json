@@ -2,10 +2,7 @@
   "serviceUrl": "http://23.253.35.56:8081/DeviceHive/rest",
   "accessKey": "sStsRCchw3pCUeLwyVvhX/Q27CKeJgVFcNcDBvJiB6g=",
   "deviceId": "e50d6085-2aba-48e9-b1c3-73c673e414be",
-  "elasticsearch": {
-    "host": "localhost",
-    "port": 9200,
-    "pathPrefix": "",
-    "secure": false
-  }
+  "elastic-host": "localhost:9200",
+  "elastic-index": "notifications",
+  "elastic-type": "SensorReading"
 }

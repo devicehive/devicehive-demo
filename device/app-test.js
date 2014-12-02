@@ -13,13 +13,17 @@ var app = ({
         this.interval = setInterval(function () {
             
             DevicehiveConnector.send('equipment', {
-                equipment: 'LED', 
-                state: Math.round(Math.random() * 10) >= 5 ? 1 : 0
+                Time : new Date(),
+                Tag : '{11111111-1111-1111-1111-111111111111}',
+                Name : 'LED',
+                Value : Math.round(Math.random() * 10) >= 5 ? 1 : 0
             });
             
             DevicehiveConnector.send('equipment', {
-                equipment: 'temp', 
-                temperature: Math.round(Math.random() * 36)
+                Time : new Date(),
+                Tag : '{22222222-2222-2222-2222-222222222222}',
+                Name : 'temp',
+                Value : Math.round(Math.random() * 36)
             });
 
         }, 2 * 1000);
