@@ -115,20 +115,36 @@ var app = ({
             });
         },
 
-        aa01: function (c, id, uuid) {
+        aa12: function (c, id) {
+            c.write(new Buffer([0x01]), false, function (error) {
+                console.log('Writing to ' + id + ': ' + error);
+            });
+        },
 
+        aa11: function (c, id, uuid) {
             c.notify(true, function (error) {
                 console.log('Subscribing to notifications from ' + id + ': ' + error);
             });
 
             var self = this;
             c.on('read', function (data, isNotification) {
-                self.onAa01Read.apply(self, [data, isNotification, uuid]);
+                self.onAccelerometerRead.apply(self, [data, isNotification, uuid]);
+            });
+        },
+
+        aa01: function (c, id, uuid) {
+            c.notify(true, function (error) {
+                console.log('Subscribing to notifications from ' + id + ': ' + error);
+            });
+
+            var self = this;
+            c.on('read', function (data, isNotification) {
+                self.onIRTempRead.apply(self, [data, isNotification, uuid]);
             });
         },
     },
     
-    onAa01Read: function (data, isNotification, uuid) {
+    onIRTempRead: function (data, isNotification, uuid) {
         console.log('Received notification from ' + uuid + ': ' + data.toString('hex'));
         var temp = this.extractTargetTemperature(data);
         console.log('Temperature = ' + temp);
@@ -137,6 +153,26 @@ var app = ({
             tag : uuid,
             name : 'Temperature',
             value : temp
+        });
+    },
+
+    onAccelerometerRead: function (data, isNotification, uuid) {
+        console.log('Received notification from ' + uuid + ': ' + data.toString('hex'));
+        // var temp = this.extractTargetTemperature(data);
+
+        var x = data.readInt8(0) / 64.0;
+        var y = data.readInt8(1) / 64.0;
+        var z = -1 * data.readInt8(2) / 64.0;
+
+        var sum = x*x + y*y + z*z;
+
+        console.log("Accelerometer: " + sum);
+
+        DevicehiveConnector.send('accelerometer', {
+            time : new Date(),
+            tag : uuid,
+            name : 'Accelerometer',
+            value : sum
         });
     },
 
