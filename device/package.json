@@ -1,10 +1,13 @@
 {
   "name": "device",
+  "description": "Test ",
+  "repository": {},
   "version": "0.0.1",
   "dependencies": {
     "nconf": "^0.6.9",
     "noble": "^0.3.6",
     "xhr2": "^0.1.0",
     "ws": "0.4.25"
-  }
+  },
+  "private": true
 }

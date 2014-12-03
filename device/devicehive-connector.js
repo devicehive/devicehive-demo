@@ -11,7 +11,23 @@ module.exports = {
     init: function (deviceKey, callback) {
         
         var self = this;
-        this.device.registerDevice({ key: deviceKey }, 
+        this.device.registerDevice({
+                name: "Intel Edison With Sensor Tags",
+                key: deviceKey,
+                deviceClass: {
+                    name: 'Intel Edison',
+                    version: '0.0.1',
+                    equipment: [{
+                        name: 'Temperature Sensor',
+                        type: 'SensorTag',
+                        code: '70f31319a57e4eaa97bb6dcb89ccb2c5'
+                    }, {
+                        name: 'Accelerometer Sensor',
+                        type: 'SensorTag',
+                        code: 'b27c94fed9e64f60aa893aa4e6458095'
+                    }]
+                }
+            },
             function (err, res) {
                 if (err) {
                     return self.showError(err);
