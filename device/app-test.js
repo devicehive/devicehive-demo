@@ -13,17 +13,17 @@ var app = ({
         this.interval = setInterval(function () {
 
             DevicehiveConnector.send('accelerometer', {
-                Time : new Date(),
-                Tag : 'b27c94fed9e64f60aa893aa4e6458095',
-                Name : 'Accelerometer',
-                Value : Math.round(Math.random() * 10) >= 5 ? 1 : 0
+                time : new Date(),
+                tag : 'b27c94fed9e64f60aa893aa4e6458095',
+                name : 'Accelerometer',
+                value : Math.round(Math.random() * 10) >= 5 ? 1 : 0
             });
 
             DevicehiveConnector.send('temperature', {
-                Time : new Date(),
-                Tag : '70f31319a57e4eaa97bb6dcb89ccb2c5',
-                Name : 'Temperature',
-                Value : Math.round(Math.random() * 36)
+                time : new Date(),
+                tag : '70f31319a57e4eaa97bb6dcb89ccb2c5',
+                name : 'Temperature',
+                value : Math.round(Math.random() * 36)
             });
 
         }, 2 * 1000);
