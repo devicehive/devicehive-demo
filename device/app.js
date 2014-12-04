@@ -19,7 +19,7 @@ var app = ({
 
         console.log("stateChange(): " + state);
 
-        if (state === "poweredOff") {
+        if (state === "poweredOn") {
 
             DevicehiveConnector.init(function () {
                 console.log("DeviceHive channel opened");
