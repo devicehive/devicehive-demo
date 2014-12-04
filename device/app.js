@@ -8,8 +8,9 @@ var app = ({
     ], // default: [] => all
     
     start: function () {
-        DevicehiveConnector.init(peripheral.uuid, function () {
-            this.subscribeNoble();
+        var self = this;
+        DevicehiveConnector.init(config.get('deviceKey'), function () {
+            self.subscribeNoble();
         });
     },
     
