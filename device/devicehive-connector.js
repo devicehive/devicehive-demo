@@ -7,13 +7,13 @@ module.exports = {
     
     device: new DeviceHive(
         config.get('serviceUrl'), config.get('deviceId'), config.get('accessKey')),
-    
-    init: function (deviceKey, callback) {
-        
+
+    init: function (callback) {
+
         var self = this;
         this.device.registerDevice({
                 name: "Intel Edison With Sensor Tags",
-                key: deviceKey,
+                key: config.get('deviceKey'),
                 deviceClass: {
                     name: 'Intel Edison',
                     version: '0.0.1',

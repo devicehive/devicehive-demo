@@ -9,7 +9,7 @@ var app = ({
     
     start: function () {
         var self = this;
-        DevicehiveConnector.init(config.get('deviceKey'), function () {
+        DevicehiveConnector.init(function () {
             self.subscribeNoble();
         });
     },

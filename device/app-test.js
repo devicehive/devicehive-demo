@@ -3,8 +3,7 @@
 var app = ({
 
     start: function () {
-        var deviceKey = '{00000000-0000-0000-0000-000000000000}';
-        DevicehiveConnector.init(deviceKey, this.notify);
+        DevicehiveConnector.init(this.notify);
         console.log('app-test started...');
     },
 
