@@ -1,5 +1,6 @@
 ﻿var noble = require('noble');
 var DevicehiveConnector = require('./devicehive-connector.js');
+var config = require('nconf').argv().env().file({ file: './config.json' });
 
 var app = ({
     
