@@ -8,7 +8,9 @@ var app = ({
     ], // default: [] => all
     
     start: function () {
-        this.subscribeNoble();
+        DevicehiveConnector.init(peripheral.uuid, function () {
+            this.subscribeNoble();
+        });
     },
     
     subscribeNoble: function () {
@@ -72,9 +74,7 @@ var app = ({
     
     onConnect: function (peripheral) {
         console.log('Connected to ' + peripheral.uuid);
-        DevicehiveConnector.init(peripheral.uuid, function () {
-            peripheral.discoverServices();
-        });
+        peripheral.discoverServices();
     },
     
     onDisconnect: function (peripheral) {
