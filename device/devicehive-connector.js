@@ -1,10 +1,12 @@
 ﻿global.XMLHttpRequest = require('xhr2');
 global.WebSocket = require('ws');
 var DeviceHive = require('./devicehive/devicehive.device.js');
-var config = require('nconf').argv().env().file({ file: './config.json' });
+var config = require('nconf').argv().env().file({
+    file: './config.json'
+});
 
 module.exports = {
-    
+
     device: new DeviceHive(
         config.get('serviceUrl'), config.get('deviceId'), config.get('accessKey')),
 
@@ -37,32 +39,36 @@ module.exports = {
                     if (err) {
                         return self.showError(err);
                     }
-                    
+
                     callback(this.device);
                 }, 'websocket');
             });
     },
-    
+
     send: function (notification, params) {
         var self = this;
         this.device.sendNotification(
-            notification, params, 
+            notification, params,
             function (err, res) {
+                if (err) {
+                    return console.log('Cannot send notification');
+                }
+
                 self.notifCallback(err, res.notification, params);
             });
     },
-    
-    notifCallback: function (err, res, params) {        
+
+    notifCallback: function (err, res, params) {
         if (err) {
             return this.showError(err);
         }
 
-        console.log(JSON.stringify(res));  
+        console.log(JSON.stringify(res));
         console.log('\nNotif sent OK id=' + res.id + ', ' + res.timestamp);
         console.log('\t' + JSON.stringify(params));
     },
 
-    showError: function (err) { 
+    showError: function (err) {
         console.log('Error: ' + JSON.stringify(err));
     }
 };
