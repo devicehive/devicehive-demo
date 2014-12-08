@@ -154,6 +154,8 @@ var app = ({
     },
 
     onIRTempRead: function (data, isNotification, uuid) {
+        var self = this;
+
         console.log('Received notification from ' + uuid + ': ' + data.toString('hex'));
         var temp = this.extractTargetTemperature(data);
         console.log('Temperature = ' + temp);
@@ -167,7 +169,9 @@ var app = ({
 
     onAccelerometerRead: function (data, isNotification, uuid) {
         console.log('Received notification from ' + uuid + ': ' + data.toString('hex'));
-        // var temp = this.extractTargetTemperature(data);
+
+        var self = this;
+
 
         var x = data.readInt8(0) / 64.0;
         var y = data.readInt8(1) / 64.0;
