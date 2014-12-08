@@ -7,6 +7,8 @@ var app = ({
         // '70f31319a57e4eaa97bb6dcb89ccb2c5'
     ], // default: [] => all
 
+    connectedPeripherals: [],
+
     start: function () {
         var self = this;
         noble.on('stateChange', function (state) {
@@ -44,7 +46,10 @@ var app = ({
         console.log('Stopping peripheral scan');
     },
 
+
+
     onDiscover: function (peripheral) {
+        var self = this;
         // console.log("onDiscover()");
 
         if (peripheral.advertisement.localName !== 'SensorTag') {
@@ -54,6 +59,12 @@ var app = ({
         if (peripheral.state !== 'disconnected') {
             return;
         }
+
+        if (self.connectedPeripherals.indexOf(peripheral.uuid) != -1) {
+            return;
+        }
+
+        self.connectedPeripherals.push(peripheral.uuid);
 
 
         this.subscribePeripheral(peripheral);
