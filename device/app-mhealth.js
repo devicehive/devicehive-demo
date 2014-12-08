@@ -1,5 +1,12 @@
 ﻿var noble = require('noble');
-var DevicehiveConnector = require('./devicehive-connector.js');
+// var DevicehiveConnector = require('./devicehive-connector.js');
+
+var elasticsearch = require('elasticsearch');
+var client = new elasticsearch.Client({
+  host: '104.131.168.128:9200',
+//  log: 'trace'
+});
+
 
 var app = ({
 
@@ -21,18 +28,17 @@ var app = ({
 
         if (state === "poweredOn") {
 
-            DevicehiveConnector.init(function () {
-                console.log("DeviceHive channel opened");
+            // DevicehiveConnector.init(function () {
+            //     console.log("DeviceHive channel opened");
 
                 noble.on('scanStart', self.onScanStart);
                 noble.on('scanStop', self.onScanStop);
                 noble.on('discover', function (peripheral) {
-                    // console.log("discover()");
                     self.onDiscover.apply(self, [peripheral]);
                 });
 
                 noble.startScanning(self.serviceUUIDs, true);
-            });
+            // });
         }
     },
 
@@ -45,8 +51,6 @@ var app = ({
     },
 
     onDiscover: function (peripheral) {
-        // console.log("onDiscover()");
-
         if (peripheral.advertisement.localName !== 'SensorTag') {
             return;
         }
@@ -110,6 +114,7 @@ var app = ({
                 {
                     self.tagNames[peripheral.uuid] = "Tag" + Object.keys(self.tagNames).length;
                 }
+
                 self.characteristicHandlers[id].apply(self, [c, id, peripheral.uuid]);
             }
         })
@@ -154,19 +159,35 @@ var app = ({
     },
 
     onIRTempRead: function (data, isNotification, uuid) {
-        console.log('Received notification from ' + uuid + ': ' + data.toString('hex'));
+        var self = this;
+        // console.log('Received notification from ' + uuid + ': ' + data.toString('hex'));
         var temp = this.extractTargetTemperature(data);
         console.log('Temperature = ' + temp);
-        DevicehiveConnector.send('temperature', {
-            time: new Date(),
-            tag: self.tagNames[uuid],
-            name: 'Temperature',
-            value: temp
-        });
+
+
+        client.index(
+        {
+             index : 'devicehive',
+             type : 'SensorReading',
+             body: {
+                time: new Date(),
+                tag: self.tagNames[uuid],
+                name: 'Temperature',
+                value: temp             
+            }
+         });
+
+        // DevicehiveConnector.send('temperature', {
+        //     time: new Date(),
+        //     tag: uuid,
+        //     name: 'Temperature',
+        //     value: temp
+        // });
     },
 
     onAccelerometerRead: function (data, isNotification, uuid) {
-        console.log('Received notification from ' + uuid + ': ' + data.toString('hex'));
+        // console.log('Received notification from ' + uuid + ': ' + data.toString('hex'));
+        var self = this;
         // var temp = this.extractTargetTemperature(data);
 
         var x = data.readInt8(0) / 64.0;
@@ -177,12 +198,24 @@ var app = ({
 
         console.log("Accelerometer: " + sum);
 
-        DevicehiveConnector.send('accelerometer', {
-            time: new Date(),
-            tag: self.tagNames[uuid],
-            name: 'Accelerometer',
-            value: sum
-        });
+        client.index(
+        {
+             index : 'devicehive',
+             type : 'SensorReading',
+             body: {
+                time: new Date(),
+                tag: self.tagNames[uuid],
+                name: 'accelerometer',
+                value: sum             
+            }
+         });
+
+        // DevicehiveConnector.send('accelerometer', {
+        //     time: new Date(),
+        //     tag: uuid,
+        //     name: 'Accelerometer',
+        //     value: sum
+        // });
     },
 
     extractAmbientTemperature: function (t) {
