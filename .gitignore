@@ -10,3 +10,4 @@
 /bridge/bridge.njsproj
 /bridge/bin
 /device/bin
+node_modules

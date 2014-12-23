@@ -1,0 +1,12 @@
+{
+  "name": "simulator",
+  "version": "1.0.0",
+  "main": "app.js",
+  "author": "Artem Sorokin",
+  "dependencies": {
+    "forever": "^0.13.0",
+    "nconf": "^0.7.1",
+    "ws": "0.4.25",
+    "xhr2": "^0.1.0"
+  }
+}

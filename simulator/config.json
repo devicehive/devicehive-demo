@@ -1,0 +1,22 @@
+{
+    "serviceUrl": "http://23.253.35.56:8081/DeviceHive/rest",
+    "accessKey": "sStsRCchw3pCUeLwyVvhX/Q27CKeJgVFcNcDBvJiB6g=",
+    "start-delay": 500,
+    "devices": [{
+        "id": "first-simulator-device",
+        "key": "key1",
+        "interval": 1000
+    }, {
+        "id": "second-simulator-device",
+        "key": "key2",
+        "interval": 1000
+    }, {
+        "id": "third-simulator-device",
+        "key": "key3",
+        "interval": 1000
+    }, {
+        "id": "fourth-simulator-device",
+        "key": "key4",
+        "interval": 1000
+    }]
+}
