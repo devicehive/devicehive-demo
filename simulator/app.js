@@ -3,24 +3,15 @@
 });
 var SimulatorDevice = require('./device');
 
-var devices = [];
-var deviceDescriptions = config.get('devices');
+var options = config.get();
+var device = new SimulatorDevice(options);
+device.start(function (err, res) {
+    if (err) {
+        return console.log('Error occurred: ' + (err.error || JSON.stringify(err)));
+    }
 
-var start = function (description) {
-    var device = new SimulatorDevice(description.id, description.key, description.interval);
-    device.start(function (err, res) {
-        if (err) {
-            return console.log('Error occurred: ' + (err.error || JSON.stringify(err)));
-        }
+    console.log('Device with id ' + options.id + ' Started successfully');
 
-        console.log('Device with id ' + description.id + ' Started successfully');
-    });
-    devices.push(device);
-};
-
-var startDelay = config.get('start-delay');
-for (var i = 0; i < deviceDescriptions.length; i++) {
-    var description = deviceDescriptions[i];
-    // neccessary to fix 409 conflict error
-    setTimeout(start.bind(void 0, description), i * startDelay);
-}
+}, function (err, sentParameter, equipment) {
+    console.log(err ? 'Error ocurred: ' + err.error : 'Sent ' + equipment.code + ' notification for device');
+});
