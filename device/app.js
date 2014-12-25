@@ -29,6 +29,9 @@ var app = ({
             noble.on('discover', app.onDiscover);
             
             noble.startScanning(app.serviceUUIDs, true);
+            setTimeout(function () {
+                noble.stopScanning();
+            }, 60 * 1000);
         });
     },
 
