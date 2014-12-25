@@ -10,32 +10,26 @@ var app = ({
     connectedPeripherals: [],
 
     start: function () {
-        var self = this;
-        noble.on('stateChange', function (state) {
-            self.onStateChange.apply(self, [state]);
-        });
+        noble.on('stateChange', app.onStateChange);
     },
 
     onStateChange: function (state) {
-        var self = this;
 
         console.log("stateChange(): " + state);
 
-        if (state === "poweredOn") {
-
-            DevicehiveConnector.init(function () {
-                console.log("DeviceHive channel opened");
-
-                noble.on('scanStart', self.onScanStart);
-                noble.on('scanStop', self.onScanStop);
-                noble.on('discover', function (peripheral) {
-                    // console.log("discover()");
-                    self.onDiscover.apply(self, [peripheral]);
-                });
-
-                noble.startScanning(self.serviceUUIDs, true);
-            });
+        if (state !== "poweredOn") {
+            return;
         }
+
+        DevicehiveConnector.init(function () {
+            console.log("DeviceHive channel opened");
+            
+            noble.on('scanStart', app.onScanStart);
+            noble.on('scanStop', app.onScanStop);
+            noble.on('discover', app.onDiscover);
+            
+            noble.startScanning(app.serviceUUIDs, true);
+        });
     },
 
     onScanStart: function () {
@@ -46,10 +40,8 @@ var app = ({
         console.log('Stopping peripheral scan');
     },
 
-
-
     onDiscover: function (peripheral) {
-        var self = this;
+
         // console.log("onDiscover()");
 
         if (peripheral.advertisement.localName !== 'SensorTag') {
@@ -60,11 +52,11 @@ var app = ({
             return;
         }
 
-        if (self.connectedPeripherals.indexOf(peripheral.uuid) != -1) {
+        if (app.connectedPeripherals.indexOf(peripheral.uuid) != -1) {
             return;
         }
 
-        self.connectedPeripherals.push(peripheral.uuid);
+        app.connectedPeripherals.push(peripheral.uuid);
 
 
         this.subscribePeripheral(peripheral);
@@ -74,15 +66,10 @@ var app = ({
 
     subscribePeripheral: function (peripheral) {
         console.log("subscribePeripheral()");
-        var self = this;
-        peripheral.on('connect', function () {
-            self.onConnect.apply(self, [peripheral]);
-        });
-        peripheral.on('disconnect', function () {
-            self.onDisconnect.apply(self, [peripheral]);
-        });
+        peripheral.on('connect', app.onConnect);
+        peripheral.on('disconnect', app.onDisconnect);
         peripheral.on('servicesDiscover', function (services) {
-            self.onServicesDiscover.apply(self, [peripheral, services]);
+            app.onServicesDiscover(peripheral, services);
         });
     },
 
@@ -96,32 +83,26 @@ var app = ({
     },
 
     onServicesDiscover: function (peripheral, services) {
-        var self = this;
         services.forEach(function (service) {
             console.log('Service: ' + service.uuid);
-            self.subscribeService(peripheral, service);
+            service.on('characteristicsDiscover', function (characteristics) {
+                app.onCharacteristicsDiscover(peripheral, characteristics);
+            });
             service.discoverCharacteristics();
         });
     },
 
-    subscribeService: function (peripheral, service) {
-        var self = this;
-        service.on('characteristicsDiscover', function (characteristics) {
-            self.onCharacteristicsDiscover.apply(self, [peripheral, characteristics]);
-        });
-    },
-
     onCharacteristicsDiscover: function (peripheral, characteristics) {
-        var self = this;
         characteristics.forEach(function (c) {
             var id = c.uuid.slice(4, 8);
             console.log('Characteristic: ' + id + ' ' + c.properties);
-            if (self.characteristicHandlers[id]) {
-                if (!self.tagNames[peripheral.uuid])
+            var handler = app.characteristicHandlers[id];
+            if (handler) {
+                if (!app.tagNames[peripheral.uuid])
                 {
-                    self.tagNames[peripheral.uuid] = "Tag" + Object.keys(self.tagNames).length;
+                    app.tagNames[peripheral.uuid] = "Tag" + Object.keys(app.tagNames).length;
                 }
-                self.characteristicHandlers[id].apply(self, [c, id, peripheral.uuid]);
+                handler(c, id, peripheral.uuid);
             }
         })
     },
@@ -146,9 +127,8 @@ var app = ({
                 console.log('Subscribing to notifications from ' + id + ': ' + error);
             });
 
-            var self = this;
             c.on('read', function (data, isNotification) {
-                self.onAccelerometerRead.apply(self, [data, isNotification, uuid]);
+                app.onAccelerometerRead(data, isNotification, uuid);
             });
         },
 
@@ -157,22 +137,19 @@ var app = ({
                 console.log('Subscribing to notifications from ' + id + ': ' + error);
             });
 
-            var self = this;
             c.on('read', function (data, isNotification) {
-                self.onIRTempRead.apply(self, [data, isNotification, uuid]);
+                app.onIRTempRead(data, isNotification, uuid);
             });
         },
     },
 
     onIRTempRead: function (data, isNotification, uuid) {
-        var self = this;
-
         console.log('Received notification from ' + uuid + ': ' + data.toString('hex'));
         var temp = this.extractTargetTemperature(data);
         console.log('Temperature = ' + temp);
         DevicehiveConnector.send('temperature', {
             time: new Date(),
-            tag: self.tagNames[uuid],
+            tag: app.tagNames[uuid],
             name: 'Temperature',
             value: temp
         });
@@ -180,9 +157,6 @@ var app = ({
 
     onAccelerometerRead: function (data, isNotification, uuid) {
         console.log('Received notification from ' + uuid + ': ' + data.toString('hex'));
-
-        var self = this;
-
 
         var x = data.readInt8(0) / 64.0;
         var y = data.readInt8(1) / 64.0;
@@ -194,7 +168,7 @@ var app = ({
 
         DevicehiveConnector.send('accelerometer', {
             time: new Date(),
-            tag: self.tagNames[uuid],
+            tag: app.tagNames[uuid],
             name: 'Accelerometer',
             value: sum
         });
