@@ -32,35 +32,65 @@ module.exports = {
             },
             function (err, res) {
                 if (err) {
-                    return self.showError(err);
+                    console.log('Failed register in DH. Will retry in 5 secs...');
+                
+                    setTimeout(function () {
+                        self.init(callback);
+                    }, 5 * 1000);
+                
+                    return;
                 }
 
                 self.device.openChannel(function (err, name) {
                     if (err) {
                         return self.showError(err);
                     }
-
-                    callback(this.device);
+                
+                    self.channelOpened = true;
+                
+                    if (callback) {
+                        callback(self.device);
+                    }
                 }, 'websocket');
             });
     },
 
     send: function (notification, params) {
-        var self = this;
-        this.device.sendNotification(
-            notification, params,
-            function (err, res) {
-                if (err) {
-                    return console.log('Cannot send notification');
-                }
 
-                self.notifCallback(err, res.notification, params);
-            });
+        if (!this.channelOpened) {
+            return;
+        }
+
+        var self = this;
+
+        try {
+
+            this.device.sendNotification(
+                notification, params,
+                function (err, res) {
+                    if (err) {
+                        return console.log('Cannot send notification');
+                    }
+                    
+                    self.notifCallback(err, res, params);
+                });
+
+        } catch (e) {
+            console.log('Connection failed: %s', 
+                ((e.message && (e.message === 'not opened')) ? e.message : ''));
+            
+            this.channelOpened = false;
+            self.init();
+        }
     },
 
     notifCallback: function (err, res, params) {
         if (err) {
             return this.showError(err);
+        }
+        
+        if (res.notification) {
+            res = res.notification;
         }
 
         console.log(JSON.stringify(res));
