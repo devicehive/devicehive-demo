@@ -14,25 +14,31 @@ var app = ({
 
     start: function () {
         
-        var self = this;
         this.createIndex(function () {
-            self.dhClient.getDevice(config.get('deviceId'), 
-            function (err, device) {
-                if (err) {
-                    return self.logError(err);
-                }
-                
-                self.logDeviceInfo(device);
-                self.subscribeNotifications(device);
-            });
+            app.initDh();
         });
 
         console.log('-- App started...');
     },
     
+    initDh: function () {
+        app.dhClient.getDevice(config.get('deviceId'), 
+            function (err, device) {
+                if (err) {
+                    console.log('-- Could not connect to DeviceHive. Will retry in 5 secs...');
+                
+                    setTimeout(function () {
+                        app.initDh();
+                    }, 5 * 1000);
+                    return;
+                }
+            
+                app.logDeviceInfo(device);
+                app.subscribeNotifications(device);
+            });
+    },
+    
     createIndex: function (callback) {
-        
-        var self = this;
         
         var params = {
             index: config.get('elastic-index')
@@ -55,9 +61,9 @@ var app = ({
                 }
             };
             
-            self.client.indices.create(params, function (err, res) {
+            app.client.indices.create(params, function (err, res) {
                 if (err) {
-                    return self.logError(err);
+                    return app.logError(err);
                 }
                 
                 console.log('-- Index created: ' + params.index);
@@ -69,11 +75,10 @@ var app = ({
     },
     
     deleteAndCreate: function (params, doCreateIndex) {
-        var self = this;
         this.client.indices.exists(params, 
             function (err, isExists) {
                 if (err) {
-                    return self.logError(err);
+                    return app.logError(err);
                 }
             
                 if (!isExists) {
@@ -81,9 +86,9 @@ var app = ({
                     return;
                 }
 
-                self.client.indices.delete(params, function (err, res) {
+                app.client.indices.delete(params, function (err, res) {
                     if (err) {
-                        return self.logError(err);
+                        return app.logError(err);
                     }
                     
                     console.log('-- Index deleted: ' + params.index);
@@ -93,34 +98,46 @@ var app = ({
     },
     
     subscribeNotifications: function (device) {
-        var self = this;
         this.dhClient.channelStateChanged(function (data) {
-            self.logChannelState(data.newState);
+            app.logChannelState(data.newState);
         });
 
         this.dhClient.openChannel(function (err, channel) {
             if (err) {
-                return self.logError(err);
+                return app.logError(err);
             }
             
-            var subscription = self.dhClient.subscribe(null, { deviceIds: device.id, });
+            app.handleLostWsConnection(app.dhClient.channel, channel);
+
+            var subscription = app.dhClient.subscribe(null, { deviceIds: device.id, });
             subscription.message(function () {
-                self.handleNotification.apply(self, arguments);
+                app.handleNotification.apply(app, arguments);
             });
-        }, 'websocket');
+        }, 'websocket'/*'longpolling'*/);
+    },
+    
+    handleLostWsConnection: function (channel, name) {
+        
+        if (name !== 'websocket') {
+            return;
+        }
+
+        channel._wsApi._transport._native.onclose = function () {
+            console.log('-- Websockets connection lost. Try to restore...');
+            app.initDh();
+        };
     },
     
     handleNotification: function (deviceId, notification) {
-        var self = this;
         notification.deviceId = deviceId;
         console.log(JSON.stringify(notification));
-        self.client.index({
+        app.client.index({
             index: config.get('elastic-index'), 
             type: config.get('elastic-type'), 
             body: notification.parameters
         }, function (err, res) {
             if (err) {
-                return self.logError(err);
+                return app.logError(err);
             }
             
             console.log('-- Indexed: ' + JSON.stringify(res) + '\n');
