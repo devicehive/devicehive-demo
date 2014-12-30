@@ -62,15 +62,19 @@ var app = ({
         app.connectedPeripherals.push(peripheral.uuid);
 
 
-        this.subscribePeripheral(peripheral);
+        app.subscribePeripheral(peripheral);
         peripheral.connect();
         console.log(peripheral);
     },
 
     subscribePeripheral: function (peripheral) {
         console.log("subscribePeripheral()");
-        peripheral.on('connect', app.onConnect);
-        peripheral.on('disconnect', app.onDisconnect);
+        peripheral.on('connect', function () {
+            app.onConnect(peripheral);
+        });
+        peripheral.on('disconnect', function () {
+            app.onDisconnect(peripheral);
+        });
         peripheral.on('servicesDiscover', function (services) {
             app.onServicesDiscover(peripheral, services);
         });
