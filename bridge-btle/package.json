@@ -1,0 +1,10 @@
+{
+  "name": "bridge",
+  "version": "0.0.1",
+  "dependencies": {
+    "elasticsearch": "^3.0.0",
+    "nconf": "^0.6.9",
+    "xhr2": "^0.1.0",
+    "ws": "0.4.25"
+  }
+}
