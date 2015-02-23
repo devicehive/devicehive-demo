@@ -1,7 +1,7 @@
 {
   "serviceUrl": "http://alljoyn.pgcloud.devicehive.com/DeviceHive/rest",
   "accessKey": "QlVCy3FYG+ijc7E56C8/i4sIE5j1fgUYdYCOLYSqFfA=",
-  "deviceId": "3305fe00-9bc9-11e4-bd06-0800200c9a66",
+  "deviceId": "3305fe00-9bc9-11e4-bd06-0800200c9a88",
   "elastic-host": "104.131.168.128:9200",
   "elastic-index": "notifications",
   "elastic-type": "SensorReading"

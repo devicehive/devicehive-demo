@@ -178,10 +178,11 @@ var app = {
 
     toTempParams: function (notification) {
         return {
-            time: new Date().toISOString(),
+            time: new Date(),
             tag: 'Tag01',
             name: 'Temperature',
-            value: app.extractTargetTemperature(new Buffer(notification.parameters.valueHex))
+            value: app.extractTargetTemperature(
+                new Buffer(notification.parameters.valueHex, 'hex'))
         }
     },
 
