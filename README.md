@@ -45,7 +45,7 @@ for ubuntu users:
 
 for other:
 
-    scp ubuntu@<Machine-IP>:/tmp ble-gateway.devicehive_1.0.5_multi.snap
+    scp ble-gateway.devicehive_1.0.5_multi.snap ubuntu@<Machine-IP>:/tmp
     ssh ubuntu@<Machine-IP> -- sudo snappy install /tmp/ble-gateway.devicehive_1.0.5_multi.snap
 
 6.  Configure Snap parameters:
