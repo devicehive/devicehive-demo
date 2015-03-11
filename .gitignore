@@ -11,3 +11,4 @@
 /bridge/bin
 /device/bin
 node_modules
+es-kibana/data

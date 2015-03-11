@@ -1,0 +1,35 @@
+{
+	"kibana-int": {
+		"aliases": {},
+		"mappings": {
+			"dashboard": {
+				"properties": {
+					"dashboard": {
+						"type": "string"
+					},
+					"group": {
+						"type": "string"
+					},
+					"title": {
+						"type": "string"
+					},
+					"user": {
+						"type": "string"
+					}
+				}
+			}
+		},
+		"settings": {
+			"index": {
+				"creation_date": "1426078403909",
+				"uuid": "okQm8XVTTSKcxFUy17d9DA",
+				"number_of_replicas": "1",
+				"number_of_shards": "5",
+				"version": {
+					"created": "1040499"
+				}
+			}
+		},
+		"warmers": {}
+	}
+}
