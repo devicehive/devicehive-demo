@@ -3,7 +3,7 @@ NAME=devicehive-demo-ek
 
 ES_MOUNT=-v $(shell pwd)/data:/elasticsearch/data/
 
-KIBANA_PORT?=8000
+KIBANA_PORT?=8081
 ES_PORT?=9200
 
 .PHONY: kibana

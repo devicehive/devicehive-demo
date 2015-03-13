@@ -20,7 +20,7 @@ DeviceHive server API will be accessible, by this url:
 Kibana will be deployed to this url
 
     http://<your-host-IP>:8081/
-
+e
 Let's now configure you device.
 
 Configure Beagle Bone 
@@ -90,4 +90,7 @@ Goto
 
     http://<your-host-IP>:8081/
 
-And check you device data
+By default you will be navigated to the dashboard for a Temperature SensorTag. To see data for the Light SensorTag, follow this link:
+
+     http://<your-host-IP>:8081/#/dashboard/file/light.json
+

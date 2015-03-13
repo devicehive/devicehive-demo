@@ -10,7 +10,7 @@
           "pin": false,
           "type": "lucene",
           "enable": true,
-          "query": "tag:Edison-Tag0"
+          "query": "tag:Tag0"
         },
         "1": {
           "id": 1,
@@ -19,7 +19,7 @@
           "pin": false,
           "type": "lucene",
           "enable": true,
-          "query": "tag:Edison-Tag1"
+          "query": "tag:Tag1"
         },
         "2": {
           "id": 2,
@@ -28,23 +28,13 @@
           "pin": false,
           "type": "lucene",
           "enable": true,
-          "query": "tag:Tag1"
-        },
-        "3": {
-          "id": 3,
-          "color": "#EF843C",
-          "alias": "",
-          "pin": false,
-          "type": "lucene",
-          "enable": true,
-          "query": "tag:Edison-Tag2"
+          "query": "tag:Tag2"
         }
       },
       "ids": [
         0,
         1,
-        2,
-        3
+        2
       ]
     },
     "filter": {
@@ -114,11 +104,10 @@
             "ids": [
               0,
               1,
-              2,
-              3
+              2
             ]
           },
-          "title": "Events over time",
+          "title": "Light over time",
           "intervals": [
             "auto",
             "1s",
@@ -140,10 +129,10 @@
             "query_as_alias": true
           },
           "scale": 1,
-          "y_format": "none",
+          "y_format": "short",
           "grid": {
-            "max": 150,
-            "min": -15
+            "max": null,
+            "min": null
           },
           "annotate": {
             "enable": false,
@@ -165,7 +154,7 @@
       "notice": false
     },
     {
-      "title": "",
+      "title": "Current",
       "height": "150px",
       "editable": true,
       "collapse": false,
@@ -194,14 +183,17 @@
           "counter_pos": "above",
           "spyable": true,
           "queries": {
-            "mode": "selected",
+            "mode": "all",
             "ids": [
+              0,
+              1,
               2
             ]
           },
           "tmode": "terms_stats",
           "tstat": "mean",
-          "valuefield": "value"
+          "valuefield": "value",
+          "title": "Current Light Value"
         }
       ],
       "notice": false
@@ -225,16 +217,16 @@
       "query": "*",
       "pinned": true,
       "history": [
-        "tag:Edison-Tag2",
+        "tag:Tag2",
         "tag:Tag1",
+        "tag:Tag0",
+        "tag:Edison-Tag2",
         "tag:Edison-Tag1",
         "tag:Edison-Tag0",
-        "tag:Tag2",
         "*",
         "tag:Tag3",
         "tag:Tag4",
-        "Tag3",
-        "tag: Tag3"
+        "Tag3"
       ],
       "remember": 10,
       "enable": true

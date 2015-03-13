@@ -1,5 +1,5 @@
 {
-  "title": "Accelerometer SensorTag",
+  "title": "Light SensorTag",
   "services": {
     "query": {
       "list": {
@@ -10,7 +10,7 @@
           "pin": false,
           "type": "lucene",
           "enable": true,
-          "query": "tag: Tag2"
+          "query": "tag:Tag0"
         },
         "1": {
           "id": 1,
@@ -19,7 +19,7 @@
           "pin": false,
           "type": "lucene",
           "enable": true,
-          "query": "tag: Edison-Tag0"
+          "query": "tag:Tag1"
         },
         "2": {
           "id": 2,
@@ -28,40 +28,30 @@
           "pin": false,
           "type": "lucene",
           "enable": true,
-          "query": "tag: Edison-Tag1"
-        },
-        "3": {
-          "id": 3,
-          "color": "#EF843C",
-          "alias": "",
-          "pin": false,
-          "type": "lucene",
-          "enable": true,
-          "query": "tag: Edison-Tag2"
+          "query": "tag:Tag2"
         }
       },
       "ids": [
         0,
         1,
-        2,
-        3
+        2
       ]
     },
     "filter": {
       "list": {
         "0": {
-          "type": "time",
-          "field": "time",
-          "from": "now-10s",
-          "to": "now",
+          "type": "querystring",
+          "query": "name:Light",
           "mandate": "must",
           "active": true,
           "alias": "",
           "id": 0
         },
         "1": {
-          "type": "querystring",
-          "query": "name:Accelerometer",
+          "type": "time",
+          "field": "time",
+          "from": "now-1m",
+          "to": "now",
           "mandate": "must",
           "active": true,
           "alias": "",
@@ -76,7 +66,95 @@
   },
   "rows": [
     {
-      "title": "",
+      "title": "Graph",
+      "height": "350px",
+      "editable": true,
+      "collapse": false,
+      "collapsable": true,
+      "panels": [
+        {
+          "span": 12,
+          "editable": true,
+          "group": [
+            "default"
+          ],
+          "type": "histogram",
+          "mode": "mean",
+          "time_field": "time",
+          "value_field": "value",
+          "auto_int": false,
+          "resolution": 100,
+          "interval": "1s",
+          "fill": 3,
+          "linewidth": 3,
+          "timezone": "browser",
+          "spyable": true,
+          "zoomlinks": true,
+          "bars": false,
+          "stack": false,
+          "points": false,
+          "lines": true,
+          "legend": true,
+          "x-axis": true,
+          "y-axis": true,
+          "percentage": false,
+          "interactive": true,
+          "queries": {
+            "mode": "all",
+            "ids": [
+              0,
+              1,
+              2
+            ]
+          },
+          "title": "Light over time",
+          "intervals": [
+            "auto",
+            "1s",
+            "1m",
+            "5m",
+            "10m",
+            "30m",
+            "1h",
+            "3h",
+            "12h",
+            "1d",
+            "1w",
+            "1M",
+            "1y"
+          ],
+          "options": true,
+          "tooltip": {
+            "value_type": "cumulative",
+            "query_as_alias": true
+          },
+          "scale": 1,
+          "y_format": "short",
+          "grid": {
+            "max": null,
+            "min": null
+          },
+          "annotate": {
+            "enable": false,
+            "query": "*",
+            "size": 20,
+            "field": "_type",
+            "sort": [
+              "_score",
+              "desc"
+            ]
+          },
+          "pointradius": 5,
+          "show_query": true,
+          "legend_counts": true,
+          "zerofill": false,
+          "derivative": false
+        }
+      ],
+      "notice": false
+    },
+    {
+      "title": "Current",
       "height": "150px",
       "editable": true,
       "collapse": false,
@@ -92,7 +170,7 @@
           "exclude": [],
           "missing": false,
           "other": false,
-          "size": 50,
+          "size": 10,
           "order": "term",
           "style": {
             "font-size": "10pt"
@@ -109,98 +187,13 @@
             "ids": [
               0,
               1,
-              2,
-              3
+              2
             ]
           },
           "tmode": "terms_stats",
           "tstat": "mean",
-          "valuefield": "value"
-        }
-      ],
-      "notice": false
-    },
-    {
-      "title": "",
-      "height": "150px",
-      "editable": true,
-      "collapse": false,
-      "collapsable": true,
-      "panels": [
-        {
-          "span": 12,
-          "editable": true,
-          "type": "histogram",
-          "loadingEditor": false,
-          "mode": "mean",
-          "time_field": "time",
-          "value_field": "value",
-          "x-axis": true,
-          "y-axis": true,
-          "scale": 1,
-          "y_format": "none",
-          "grid": {
-            "max": null,
-            "min": 0
-          },
-          "queries": {
-            "mode": "selected",
-            "ids": [
-              1,
-              2,
-              3
-            ]
-          },
-          "annotate": {
-            "enable": false,
-            "query": "*",
-            "size": 20,
-            "field": "_type",
-            "sort": [
-              "_score",
-              "desc"
-            ]
-          },
-          "auto_int": true,
-          "resolution": 100,
-          "interval": "0.1s",
-          "intervals": [
-            "auto",
-            "1s",
-            "1m",
-            "5m",
-            "10m",
-            "30m",
-            "1h",
-            "3h",
-            "12h",
-            "1d",
-            "1w",
-            "1y"
-          ],
-          "lines": true,
-          "fill": 0,
-          "linewidth": 3,
-          "points": false,
-          "pointradius": 5,
-          "bars": false,
-          "stack": false,
-          "spyable": true,
-          "zoomlinks": true,
-          "options": true,
-          "legend": true,
-          "show_query": true,
-          "interactive": true,
-          "legend_counts": true,
-          "timezone": "browser",
-          "percentage": false,
-          "zerofill": false,
-          "derivative": false,
-          "tooltip": {
-            "value_type": "cumulative",
-            "query_as_alias": true
-          },
-          "title": "Motion Histogram"
+          "valuefield": "value",
+          "title": "Current Light Value"
         }
       ],
       "notice": false
@@ -224,16 +217,16 @@
       "query": "*",
       "pinned": true,
       "history": [
-        "tag: Edison-Tag2",
-        "tag: Edison-Tag1",
-        "tag: Edison-Tag0",
-        "tag: Tag2",
-        "tag: Tag1",
-        "tag: Edison-Tag3",
-        "tag: Tag3",
+        "tag:Tag2",
+        "tag:Tag1",
         "tag:Tag0",
-        "name:Accelerometer",
-        "fea83d8a49044f68b2fcd76fb4d6bcca"
+        "tag:Edison-Tag2",
+        "tag:Edison-Tag1",
+        "tag:Edison-Tag0",
+        "*",
+        "tag:Tag3",
+        "tag:Tag4",
+        "Tag3"
       ],
       "remember": 10,
       "enable": true
@@ -252,7 +245,6 @@
       "notice": false,
       "status": "Stable",
       "time_options": [
-        "10s",
         "1m",
         "5m",
         "15m",
@@ -279,7 +271,7 @@
       ],
       "timefield": "time",
       "now": true,
-      "filter_id": 0,
+      "filter_id": 1,
       "enable": true
     }
   ],
