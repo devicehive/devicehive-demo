@@ -1,11 +1,22 @@
 Configure Server
 -------
 
+Prerequisites:
+
+- Linux based OS
+- Docker 1.3+ ([Download & Install](https://docs.docker.com/installation/))
+
+**Docker installed by apt-get on Ubuntu is version 1.1, which is less than minimal. Please install docker as suggested on the official website**
+
 From the very first, configure your demo server. Сd to the repository directory and type
 
     make
 
-This will:
+**If something went wrong, run:**
+
+    make clean -i
+
+The `make` command will:
     
 1. Install all dependencies for bridge application
 2. Build elasticsearch and kibana docker container
@@ -20,7 +31,7 @@ DeviceHive server API will be accessible, by this url:
 Kibana will be deployed to this url
 
     http://<your-host-IP>:8081/
-e
+
 Let's now configure you device.
 
 Configure Beagle Bone 
