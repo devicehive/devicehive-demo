@@ -38,13 +38,11 @@ Configure Beagle Bone
 ------
 
 1.  Take board Beagle Bone Black with installed Ubuntu Snappy
+notice: default password for Ubuntu Snappy is 'password'
 2.  Insert CSR 4.0 USB Dongle to board
 3.  Connect to internet via Ethernet
-4.  Download Demo Snap from our server: 
 
-    wget http://104.131.168.128/snappy/ble-gateway.devicehive_1.0.5_multi.snap
-
-5.  Install Demo Snap:
+4.  Install Demo Snap:
 
 for ubuntu users: 
 
@@ -52,35 +50,35 @@ for ubuntu users:
     sudo apt-get update
     sudo apt-get upgrade
     sudo apt-get install snappy-tools bzr
-    snappy-remote --url=ssh://<Machine-IP> install ble-gateway.devicehive_1.0.5_multi.snap
+    snappy-remote --url=ssh://<Board-IP> install <repository-dir>/ble-gateway.devicehive_1.0.5_multi.snap
 
 for other:
 
-    scp ble-gateway.devicehive_1.0.5_multi.snap ubuntu@<Machine-IP>:/tmp
-    ssh ubuntu@<Machine-IP> -- sudo snappy install /tmp/ble-gateway.devicehive_1.0.5_multi.snap
+    scp <repository-dir>/ble-gateway.devicehive_1.0.5_multi.snap ubuntu@<Board-IP>:/tmp
+    ssh ubuntu@<Board-IP> -- sudo snappy install /tmp/ble-gateway.devicehive_1.0.5_multi.snap
 
-6.  Configure Snap parameters:
+5.  Configure Snap parameters:
 
 DeviceHive server should be set, otherwise service will not start:
     
-    ssh ubuntu@<Machine-IP> -- sudo /apps/ble-gateway.devicehive/current/bin/dhserver http://url.to.your.server
+    ssh ubuntu@<Board-IP> -- sudo /apps/ble-gateway.devicehive/current/bin/dhserver http://<your-host-IP>:8080/DeviceHive/rest/
 
 If you deployed DeviceHive server with the Makefile, check 
 `http://<your-host-IP>:8080/DeviceHive/rest/`
 
-DeviceHive deviceId:
+Set DeviceHive deviceId (if you want):
 
-    ssh ubuntu@<Machine-IP> -- sudo /apps/ble-gateway.devicehive/current/bin/gatewayid device-id-here
+    ssh ubuntu@<Board-IP> -- sudo /apps/ble-gateway.devicehive/current/bin/gatewayid device-id-here
 
 by default deviceId is a hostname
 
-DeviceHive connection type:
+DeviceHive connection type (if you want):
     
-    ssh ubuntu@<Machine-IP> -- sudo /apps/ble-gateway.devicehive/current/bin/connection rest
+    ssh ubuntu@<Board-IP> -- sudo /apps/ble-gateway.devicehive/current/bin/connection rest
 
 or
 
-    ssh ubuntu@<Machine-IP> -- sudo /apps/ble-gateway.devicehive/current/bin/connection ws
+    ssh ubuntu@<Board-IP> -- sudo /apps/ble-gateway.devicehive/current/bin/connection ws
 
 websocket (ws) is default
 
