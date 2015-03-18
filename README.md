@@ -6,7 +6,7 @@ Prerequisites:
 - Linux based OS
 - Docker 1.3+ ([Download & Install](https://docs.docker.com/installation/))
 
-**Docker installed by `sudo apt-get docker.io` on Ubuntu is version 1.1, which is less than minimal. Please install docker as suggested in [Docker Maintained Package Installation](https://docs.docker.com/installation/ubuntulinux/#docker-maintained-package-installation) section**
+**Docker installed by `sudo apt-get docker.io` on Ubuntu is version 1.0.1, which is less than minimal. Please install docker as suggested in [Docker Maintained Package Installation](https://docs.docker.com/installation/ubuntulinux/#docker-maintained-package-installation) section**
 
 From the very first, configure your demo server. Сd to the repository directory and type
 
