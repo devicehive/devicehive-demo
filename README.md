@@ -10,11 +10,11 @@ Prerequisites:
 
 From the very first, configure your demo server. Сd to the repository directory and type
 
-    make
+    sudo make
 
 **If something went wrong, run:**
 
-    make clean -i
+    sudo make clean -i
 
 The `make` command will:
     
@@ -91,7 +91,7 @@ Configure Bridge app
 
 After the device is configured run a bridge app
 
-    DEVICE_ID=<your device id> make bridge
+    sudo DEVICE_ID=<your device id> make bridge
 
 This will start bridge app between DeviceHive and ElasticSearch
 
