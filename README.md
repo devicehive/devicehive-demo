@@ -88,10 +88,12 @@ After the device is configured run a bridge app
 
     sudo DEVICE_ID=<your board gatewayid> make bridge
 
-This will start bridge app between DeviceHive and ElasticSearch
 You can find out current board gatewayid with:
 
     ssh ubuntu@<Board-IP> -- /apps/ble-gateway.devicehive/current/bin/gatewayid
+
+This will start bridge app between DeviceHive and ElasticSearch
+
 
 Check Kibana
 --------
