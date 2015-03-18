@@ -60,11 +60,8 @@ for other:
 5.  Configure Snap parameters:
 
 DeviceHive server should be set, otherwise service will not start:
-    
-    ssh ubuntu@<Board-IP> -- sudo /apps/ble-gateway.devicehive/current/bin/dhserver http://<your-host-IP>:8080/DeviceHive/rest/
 
-If you deployed DeviceHive server with the Makefile, check 
-`http://<your-host-IP>:8080/DeviceHive/rest/`
+    ssh ubuntu@<Board-IP> -- sudo /apps/ble-gateway.devicehive/current/bin/dhserver http://<your-host-IP>:8080/DeviceHive/rest/
 
 Set DeviceHive deviceId (if you want):
 
@@ -89,9 +86,12 @@ Configure Bridge app
 
 After the device is configured run a bridge app
 
-    sudo DEVICE_ID=<your device id> make bridge
+    sudo DEVICE_ID=<your board gatewayid> make bridge
 
 This will start bridge app between DeviceHive and ElasticSearch
+You can find out current board gatewayid with:
+
+    ssh ubuntu@<Board-IP> -- /apps/ble-gateway.devicehive/current/bin/gatewayid
 
 Check Kibana
 --------
