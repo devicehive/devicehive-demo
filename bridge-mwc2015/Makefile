@@ -15,10 +15,10 @@ build:
 	docker build -t $(TAG) .
 
 run:
-	$(eval ACCESS_KEY:=$(shell curl --user dhadmin:dhadmin_\#911 "$(DH_URL)/user/1/accesskey" -H 'Content-Type: application/json' --data-binary '{"permissions":[{"domains":null,"subnets":null,"actions":["GetNetwork","GetDevice","GetDeviceState","GetDeviceNotification","GetDeviceCommand","RegisterDevice","CreateDeviceNotification","CreateDeviceCommand","UpdateDeviceCommand"],"networkIds":null,"deviceGuids":null}],"label":"Admin key","expirationDate":null}' | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["key"]'))
+	$(eval ACCESS_KEY:=$(shell curl -s --user dhadmin:dhadmin_\#911 "$(DH_URL)/user/1/accesskey" -H 'Content-Type: application/json' --data-binary '{"permissions":[{"domains":null,"subnets":null,"actions":["GetNetwork","GetDevice","GetDeviceState","GetDeviceNotification","GetDeviceCommand","RegisterDevice","CreateDeviceNotification","CreateDeviceCommand","UpdateDeviceCommand"],"networkIds":null,"deviceGuids":null}],"label":"Admin key","expirationDate":null}' | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["key"]'))
 	@echo Access key: $(ACCESS_KEY)
 
-	docker run -d --name $(NAME) $(ENV)  -e "accessKey=$(ACCESS_KEY)" -w /usr/src/myapp $(TAG) node app.js
+	docker run -d --name $(NAME) $(ENV)  -e "accessKey=$(ACCESS_KEY)" $(TAG)
 
 stop:
 	docker stop $(NAME)

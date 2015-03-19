@@ -1,4 +1,4 @@
-EXTERNAL_IP=$(shell boot2docker ip 2>/dev/null || echo "localhost")
+EXTERNAL_IP=$(shell ip r get 8.8.8.8 2>/dev/null | head -1 | awk '{print $$7}' || echo "localhost")
 
 ES_HOST=$(EXTERNAL_IP)
 ES_PORT=9200
@@ -8,7 +8,7 @@ KIBANA_HOST:=$(EXTERNAL_IP)
 KIBANA_PORT=8081
 
 DH_DOMAIN=$(EXTERNAL_IP)
-DH_PORT=8080
+DH_PORT=8082
 DH_URL=http://$(DH_DOMAIN):$(DH_PORT)/DeviceHive/rest
 
 DEVICE_ID?=demo-device

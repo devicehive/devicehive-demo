@@ -25,6 +25,7 @@ build:
 	docker start $(PG_NAME)
 
 	# create user
+	sleep 5
 	docker exec $(PG_NAME) psql -U postgres -c "CREATE DATABASE $(PG_DATABASE);"
 	docker exec $(PG_NAME) psql -U postgres -c "CREATE USER $(PG_USER) WITH password '$(PG_PASSWORD)'; GRANT ALL privileges ON DATABASE $(PG_DATABASE) TO $(PG_USER);"
 
@@ -47,6 +48,7 @@ run:
 	    if [ $$? -eq 0 ]; then \
 	        FINISH=1 ; \
 	        echo "Instance is up and running" ; \
+	        curl --fail "${DH_URL}/configuration/auto" -H 'Authorization: Basic ZGhhZG1pbjpkaGFkbWluXyM5MTE=' -H "Referer: http://${DH_DOMAIN}:${DH_PORT}/DeviceHive/" --data 'input=Configure' ; \
 	    fi \
 	done ; \
 	set -e
