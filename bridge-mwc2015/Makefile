@@ -1,7 +1,8 @@
 NAME=devicehive-demo-bridge
 TAG=devicehive-bridge:1.0.0
 
-EXTERNAL_IP=$(shell boot2docker ip 2>/dev/null || echo "localhost")
+#EXTERNAL_IP=$(shell boot2docker ip 2>/dev/null || echo "localhost")
+EXTERNAL_IP=$(shell ip r get 8.8.8.8 2>/dev/null | head -1 | awk '{print $$7}' || echo "localhost")
 
 ES_URL?=http://$(EXTERNAL_IP):9200/
 DH_URL?=http://$(EXTERNAL_IP):8080/DeviceHive/rest
